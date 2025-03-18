@@ -5,8 +5,8 @@
         Edit "@pkg.name"
     </h1>
 
-    @if app.form_error.len>0
-    <p>@app.form_error</p>
+    @if ctx.form_error.len>0
+    <p>@ctx.form_error</p>
     @end
 
     @if !app.is_logged_in()

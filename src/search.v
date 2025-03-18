@@ -1,12 +1,12 @@
 module main
 
-import vweb
+import veb
 
 @['/search']
-pub fn (mut app App) search() vweb.Result {
-	query := app.query['q']
-	category := app.query['category']
-	sort := app.query['sort']
+pub fn (mut app App) search(mut ctx Context) veb.Result {
+	query := ctx.query['q']
+	category := ctx.query['category']
+	sort := ctx.query['sort']
 
 	title := if query == '' { 'All Packages' } else { 'Search Results' }
 	app.title = title + ' | vpm'
@@ -19,5 +19,5 @@ pub fn (mut app App) search() vweb.Result {
 		}
 	}
 
-	return $vweb.html()
+	return $veb.html()
 }

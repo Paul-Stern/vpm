@@ -3,7 +3,7 @@ module main
 import rand
 import net.http
 import json
-import vweb
+import veb
 import entity { User }
 import lib.log
 
@@ -22,18 +22,18 @@ fn random_string(len int) string {
 	return buf.str()
 }
 
-fn (mut app App) oauth_cb() vweb.Result {
-	code := app.req.url.all_after('code=')
+fn (mut app App) oauth_cb(mut ctx Context) veb.Result {
+	code := ctx.req.url.all_after('code=')
 	println(code)
 	if code == '' {
-		return app.redirect('/')
+		return ctx.redirect('/')
 	}
 
 	resp := http.post_form('https://github.com/login/oauth/access_token', {
 		'client_id':     app.config.gh.client_id
 		'client_secret': app.config.gh.secret
 		'code':          code
-	}) or { return app.redirect('/') }
+	}) or { return ctx.redirect('/') }
 	println('resp text=' + resp.body)
 	token := resp.body.find_between('access_token=', '&')
 	println('token =${token}')
@@ -44,11 +44,11 @@ fn (mut app App) oauth_cb() vweb.Result {
 	) or { panic(err) }
 	gh_user := json.decode(GitHubUser, user_js.body) or {
 		println('cant decode')
-		return app.redirect('/')
+		return ctx.redirect('/')
 	}
 	login := gh_user.login.replace(' ', '')
 	if login.len < 2 {
-		return app.redirect('/new')
+		return ctx.redirect('/new')
 	}
 	println('login =${login}')
 	mut random_id := random_string(20)
@@ -66,23 +66,23 @@ fn (mut app App) oauth_cb() vweb.Result {
 	random_id = app.db.q_string("select random_id from \"User\" where username='${login}' ") or {
 		panic(err)
 	}
-	app.set_cookie(
+	ctx.set_cookie(
 		name:  'id'
 		value: user_id.str()
 	)
-	app.set_cookie(
+	ctx.set_cookie(
 		name:  'q'
 		value: random_id
 	)
 	println('redirecting to /new')
-	return app.redirect('/new')
+	return ctx.redirect('/new')
 }
 
 // @[markused]
-fn (mut app App) auth() {
-	id_cookie := app.get_cookie('id') or { return }
+fn (mut app App) auth(mut ctx Context) {
+	id_cookie := ctx.get_cookie('id') or { return }
 	id := id_cookie.int()
-	q_cookie := app.get_cookie('q') or {
+	q_cookie := ctx.get_cookie('q') or {
 		log.info().msg('failed to get q cookie.')
 		return
 	}

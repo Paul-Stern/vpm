@@ -1,11 +1,11 @@
 module main
 
-import vweb
+import veb
 import db.pg
 import config
 import entity { User }
 import lib.storage.local
-import os
+// import os
 import repo
 import time
 
@@ -58,7 +58,6 @@ fn main() {
 	// 		p.update_package_stats(pkg.id) or { println(err) }
 	// 	}
 	// }(app.packages())
-
-	app.mount_static_folder_at(os.resource_abs_path('./static'), '/')
-	vweb.run_at(app, port: conf.http.port, nr_workers: 1)!
+	// app.mount_static_folder_at(os.resource_abs_path('./static'), '/') koplenov
+	veb.run_at[App, Context](mut app, port: conf.http.port)!
 }

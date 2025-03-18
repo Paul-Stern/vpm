@@ -1,9 +1,9 @@
 module main
 
-import vweb
+import veb
 import time
 
-pub fn (mut app App) index() vweb.Result {
+pub fn (mut app App) index(mut ctx Context) veb.Result {
 	// Cachable index page
 	if app.last_update == unsafe { nil } || app.last_update < time.now().add(-time.minute) {
 		p := app.packages()
@@ -20,7 +20,7 @@ pub fn (mut app App) index() vweb.Result {
 		}
 	}
 
-	return $vweb.html()
+	return $veb.html()
 }
 
 pub fn (mut app App) nr_pkgs() string {
