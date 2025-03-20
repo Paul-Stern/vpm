@@ -8,7 +8,7 @@ import markdown
 import entity { Package }
 
 @['/new']
-fn (mut app App) new(ctx Context) veb.Result {
+fn (mut app App) new(mut ctx Context) veb.Result {
 	app.title = 'Creating package | vpm'
 	return $veb.html()
 }
