@@ -45,7 +45,6 @@ pub fn (mut app App) before_request(mut ctx Context) {
 		return
 	}
 
-	// ctx.auth() koplenov
 	app.auth(mut ctx)
 }
 
