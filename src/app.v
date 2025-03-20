@@ -32,7 +32,7 @@ pub struct Context {
 }
 
 // Whole app middleware
-pub fn (mut ctx Context) before_request() {
+pub fn (mut app App) before_request(mut ctx Context) {
 	url := urllib.parse(ctx.req.url) or { panic(err) }
 
 	// Skip auth for static
@@ -42,7 +42,7 @@ pub fn (mut ctx Context) before_request() {
 		return
 	}
 
-	// ctx.auth() koplenov
+	app.auth(mut ctx)
 }
 
 fn (mut app App) packages() package.UseCase {
