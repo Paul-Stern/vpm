@@ -12,7 +12,6 @@ import repo
 import time
 
 struct App {
-	veb.Context
 	veb.StaticHandler
 	config config.Config
 pub mut:
@@ -35,7 +34,7 @@ struct Context {
 
 // Whole app middleware
 pub fn (mut app App) before_request(mut ctx Context) {
-	url := urllib.parse(app.req.url) or { panic(err) }
+	url := urllib.parse(ctx.req.url) or { panic(err) }
 
 	// Skip auth for static
 	if url.path == '/favicon.png' || url.path.starts_with('/css') || url.path.starts_with('/js') {
