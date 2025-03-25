@@ -3,7 +3,7 @@ module main
 import rand
 import net.http
 import json
-import vweb
+import veb
 import entity { User }
 import lib.log
 
@@ -22,7 +22,7 @@ fn random_string(len int) string {
 	return buf.str()
 }
 
-fn (mut app App) oauth_cb() vweb.Result {
+fn (mut app App) oauth_cb() veb.Result {
 	code := app.req.url.all_after('code=')
 	println(code)
 	if code == '' {

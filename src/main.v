@@ -1,6 +1,6 @@
 module main
 
-import vweb
+import veb
 import db.pg
 import config
 import entity { User }
@@ -60,5 +60,5 @@ fn main() {
 	// }(app.packages())
 
 	app.mount_static_folder_at(os.resource_abs_path('./static'), '/')
-	vweb.run_at(app, port: conf.http.port, nr_workers: 1)!
+	veb.run_at[App, Context](mut app, port: conf.http.port)!
 }
