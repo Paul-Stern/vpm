@@ -59,6 +59,6 @@ fn main() {
 	// 	}
 	// }(app.packages())
 
-	app.mount_static_folder_at(os.resource_abs_path('./static'), '/')
+	app.mount_static_folder_at(os.resource_abs_path('./static'), '/')!
 	veb.run_at[App, Context](mut app, port: conf.http.port)!
 }
